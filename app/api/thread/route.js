@@ -1,15 +1,11 @@
 import { NextResponse } from 'next/server';
 import { createThread, gethread, deleteThread } from '../../utils/OpenAI';
 
-export default async function handler(req, res) {
-  if (req.method === 'POST') {
-    try {
-      const thread = await createThread();
-      res.status(200).json(thread);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  } else {
-    res.status(405).end(); // Method Not Allowed
+export async function POST(req, res) {
+  try {
+    const thread = await createThread();
+    return NextResponse.json(thread);
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }

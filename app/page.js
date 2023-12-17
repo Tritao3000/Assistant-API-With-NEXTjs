@@ -4,53 +4,57 @@ import { useState, useEffect } from 'react';
 export default function ChatPage() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
+  const [threadId, setThreadId] = useState(null);
 
-  const fetchMessages = async () => {
-    // Replace with your threadId and the correct endpoint
-    const response = await fetch('/api/messages?threadId=YOUR_THREAD_ID');
+  // Fetch Messages from a specific thread
+  const fetchMessages = async (id) => {
+    const response = await fetch(`/api/messages/?threadId=${id}`);
     const data = await response.json();
-    setMessages(data.messages);
+    setMessages(data.messages.data || []);
   };
 
+  // Send a message to the backend
   const sendMessageToBackend = async (messageContent) => {
-    // Replace with your threadId and the correct endpoint
-    await fetch('/api/messages', {
+    await fetch(`/api/messages/threadId=${threadId}`, {
       method: 'POST',
-      body: JSON.stringify({
-        threadId: 'YOUR_THREAD_ID',
-        content: messageContent,
-      }),
+      body: JSON.stringify({ content: messageContent }),
       headers: { 'Content-Type': 'application/json' },
     });
   };
 
+  // Create a new thread when the component mounts
   useEffect(() => {
-    fetchMessages();
+    const createThread = async () => {
+      const response = await fetch('/api/thread', { method: 'POST' });
+      const data = await response.json();
+      setThreadId(data.id);
+      fetchMessages(data.id);
+    };
+
+    createThread();
   }, []);
 
+  // Send message and fetch latest messages including the assistant's response
   const sendMessage = async (event) => {
     event.preventDefault();
-    if (!input) return;
+    if (!input || !threadId) return;
 
     await sendMessageToBackend(input);
-    setMessages([...messages, { content: input, role: 'user' }]);
     setInput('');
-
-    // Optionally fetch messages again to include the assistant's response
-    fetchMessages();
+    fetchMessages(threadId);
   };
 
   return (
     <div className="container mx-auto p-4 h-screen flex flex-col justify-between">
       <div className="messages overflow-auto">
-        {/*messages.map((message, index) => (
+        {messages.map((message, index) => (
           <div
             key={index}
             className={`message ${message.role === 'user' ? 'text-right' : ''}`}
           >
             <p className="bg-gray-200 rounded p-2 my-2">{message.content}</p>
           </div>
-        ))*/}
+        ))}
       </div>
       <form className="mt-auto" onSubmit={sendMessage}>
         <input

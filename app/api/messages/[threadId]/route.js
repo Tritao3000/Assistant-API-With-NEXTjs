@@ -1,26 +1,28 @@
 import { createMessage, getMessages, runAssistant } from '@/app/utils/OpenAI';
+import { NextResponse } from 'next/server';
 
-export default async function handler(req, res) {
-  const { threadId } = req.query;
+export async function POST(req) {
+  try {
+    const { threadId } = req.query.threadId;
+    console.log(threadId);
+    const { content } = req.body;
+    console.log(content);
+    const message = await createMessage({ threadId, content });
+    const assistantId = process.env.ASSISTANT_ID;
+    console.log(assistantId);
+    await runAssistant({ assistantId, threadId, instructions: content });
+    return NextResponse.json(message);
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+}
 
-  if (req.method === 'POST') {
-    try {
-      const { content } = req.body;
-      const message = await createMessage({ threadId, content });
-      const assistantId = 'YOUR_ASSISTANT_ID'; // Replace with your assistant ID
-      await runAssistant({ assistantId, threadId, instructions: content });
-      res.status(200).json(message);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  } else if (req.method === 'GET') {
-    try {
-      const messages = await getMessages(threadId);
-      res.status(200).json(messages);
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  } else {
-    res.status(405).end(); // Method Not Allowed
+export async function GET(req) {
+  try {
+    const { threadId } = req.query.threadId;
+    const messages = await getMessages(threadId);
+    return NextResponse.json(messages);
+  } catch (error) {
+    return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }
