@@ -1,15 +1,15 @@
-import { NextResponse } from "next/server";
-import { createMessage, getMessages } from "../../utils/OpenAI";
+import { NextResponse } from 'next/server';
+import { createMessage, getMessages } from '../../utils/OpenAI';
 
-//create new messag
+//create new message
 export async function POST(req) {
   try {
     const formData = await req.formData();
-    let threadId = formData.get("threadId");
-    let content = formData.get("content");
+    let threadId = formData.get('threadId');
+    let content = formData.get('content');
 
     if (!threadId || !content) {
-      return NextResponse.json({ error: "Missing Fields" }, { status: 400 });
+      return NextResponse.json({ error: 'Missing Fields' }, { status: 400 });
     }
 
     let newMessage = await createMessage({ threadId, content });
@@ -20,16 +20,15 @@ export async function POST(req) {
   }
 }
 
-
 //get all message using thread id
 export async function GET(req) {
   try {
     const searchParams = req.nextUrl.searchParams;
-    const query = searchParams.get("threadId");
+    const query = searchParams.get('threadId');
 
     //error if missing
     if (!query) {
-      return NextResponse.json({ error: "Missing Query" }, { status: 400 });
+      return NextResponse.json({ error: 'Missing Query' }, { status: 400 });
     }
 
     let messages = await getMessages(query);
