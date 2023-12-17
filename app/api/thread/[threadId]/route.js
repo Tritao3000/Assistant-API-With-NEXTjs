@@ -1,10 +1,13 @@
 import { NextResponse } from 'next/server';
-import { createThread, gethread, deleteThread } from '../../utils/OpenAI';
+import { getThread } from '@/app/utils/OpenAI';
 
+//run the assistant
 export default async function handler(req, res) {
-  if (req.method === 'POST') {
+  const { threadId } = req.query;
+
+  if (req.method === 'GET') {
     try {
-      const thread = await createThread();
+      const thread = await getThread(threadId);
       res.status(200).json(thread);
     } catch (error) {
       res.status(500).json({ error: error.message });
