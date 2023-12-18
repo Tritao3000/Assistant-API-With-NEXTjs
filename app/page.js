@@ -67,7 +67,7 @@ export default function ChatPage() {
           </div>
         ))}
       </div>
-      <form className="mt-auto" onSubmit={sendMessage}>
+      <form className="mt-auto flex space-x-2" onSubmit={sendMessage}>
         <input
           type="text"
           value={input}
