@@ -7,9 +7,9 @@ export async function POST(req) {
     let bodyreq = JSON.parse(passedValue);
 
     const { messageContent, threadId } = await bodyreq;
-
     console.log(messageContent, threadId);
 
+    // died here below
     const message = await createMessage({ threadId, content });
     console.log('message created');
 
@@ -25,9 +25,9 @@ export async function POST(req) {
 
 export async function GET(req) {
   try {
+    // req.query is undefined
     console.log(req.query);
     const { threadId } = req.query.threadId;
-    console.log('crlh');
     console.log(threadId);
     const messages = await getMessages(threadId);
     return NextResponse.json(messages);

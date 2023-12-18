@@ -20,11 +20,13 @@ export async function POST(req) {
 }
 
 export async function GET(req) {
-  console.log('ola');
+  console.log('alo');
   try {
-    console.log('ola');
-    const { threadId } = req.query;
-    console.log(threadId);
+    let passedValue = await new Response(req.query).text();
+    let queryreq = JSON.parse(passedValue);
+    console.log(queryreq);
+    const { id } = await queryreq;
+    console.log(id);
     const messages = await getMessages(threadId);
     return NextResponse.json(messages);
   } catch (error) {
