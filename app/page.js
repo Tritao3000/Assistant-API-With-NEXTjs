@@ -8,9 +8,15 @@ export default function ChatPage() {
 
   // Fetch Messages from a specific thread
   const fetchMessages = async (id) => {
-    const response = await fetch(`/api/messages?threadId=${id}`);
+    console.log('chamando');
+    const response = await fetch(`/api/messages/${id}`, {
+      method: 'POST',
+      body: JSON.stringify({ threadId: id }),
+      headers: { 'Content-Type': 'application/json' },
+    });
     const data = await response.json();
-    setMessages(data.messages || []);
+    console.log(data);
+    setMessages(data.data || []);
   };
 
   // Send a message to the backend
@@ -42,17 +48,22 @@ export default function ChatPage() {
     await sendMessageToBackend(input);
     setInput('');
     fetchMessages(threadId);
+    setInterval(() => {
+      fetchMessages(threadId);
+    }, 2000);
   };
 
   return (
     <div className="container mx-auto p-4 h-screen flex flex-col justify-between">
-      <div className="messages overflow-auto">
+      <div className="messages overflow-y-scroll">
         {messages.map((message, index) => (
           <div
             key={index}
             className={`message ${message.role === 'user' ? 'text-right' : ''}`}
           >
-            <p className="bg-gray-200 rounded p-2 my-2">{message.content}</p>
+            <p className="bg-gray-200 rounded p-2 my-2">
+              {message.content[0].text.value}
+            </p>
           </div>
         ))}
       </div>

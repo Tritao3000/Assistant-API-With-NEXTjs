@@ -2,18 +2,15 @@ import { createMessage, getMessages, runAssistant } from '@/app/utils/OpenAI';
 import { NextResponse } from 'next/server';
 
 export async function POST(req) {
-  console.log('olá');
   try {
-    console.log('olá');
-    const { threadId } = req.query;
-    console.log(threadId);
-    const { content } = req.body;
-    console.log(content);
-    const message = await createMessage({ threadId, content });
-    const assistantId = process.env.ASSISTANT_ID;
-    console.log(assistantId);
-    await runAssistant({ assistantId, threadId, instructions: content });
-    return NextResponse.json(message);
+    // req.query is undefined
+    let passedValue = await new Response(req.body).text();
+    let bodyreq = JSON.parse(passedValue);
+
+    const { threadId } = bodyreq;
+
+    const messages = await getMessages(threadId);
+    return NextResponse.json(messages);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
