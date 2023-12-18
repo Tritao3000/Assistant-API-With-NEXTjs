@@ -2,8 +2,10 @@ import { createMessage, getMessages, runAssistant } from '@/app/utils/OpenAI';
 import { NextResponse } from 'next/server';
 
 export async function POST(req) {
+  console.log('olá');
   try {
-    const { threadId } = req.query.threadId;
+    console.log('olá');
+    const { threadId } = req.query;
     console.log(threadId);
     const { content } = req.body;
     console.log(content);
@@ -18,8 +20,11 @@ export async function POST(req) {
 }
 
 export async function GET(req) {
+  console.log('ola');
   try {
-    const { threadId } = req.query.threadId;
+    console.log('ola');
+    const { threadId } = req.query;
+    console.log(threadId);
     const messages = await getMessages(threadId);
     return NextResponse.json(messages);
   } catch (error) {

@@ -1,39 +1,36 @@
+import { createMessage, getMessages, runAssistant } from '@/app/utils/OpenAI';
 import { NextResponse } from 'next/server';
-import { createMessage, getMessages } from '../../utils/OpenAI';
 
-//create new message
 export async function POST(req) {
   try {
-    const formData = await req.formData();
-    let threadId = formData.get('threadId');
-    let content = formData.get('content');
+    let passedValue = await new Response(req.body).text();
+    let bodyreq = JSON.parse(passedValue);
 
-    if (!threadId || !content) {
-      return NextResponse.json({ error: 'Missing Fields' }, { status: 400 });
-    }
+    const { messageContent, threadId } = await bodyreq;
 
-    let newMessage = await createMessage({ threadId, content });
+    console.log(messageContent, threadId);
 
-    return NextResponse.json({ message: newMessage });
+    const message = await createMessage({ threadId, content });
+    console.log('message created');
+
+    const assistantId = process.env.ASSISTANT_ID;
+    console.log(assistantId);
+
+    await runAssistant({ assistantId, threadId, instructions: content });
+    return NextResponse.json(message);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
 }
 
-//get all message using thread id
 export async function GET(req) {
   try {
-    const searchParams = req.nextUrl.searchParams;
-    const query = searchParams.get('threadId');
-
-    //error if missing
-    if (!query) {
-      return NextResponse.json({ error: 'Missing Query' }, { status: 400 });
-    }
-
-    let messages = await getMessages(query);
-
-    return NextResponse.json({ messages });
+    console.log(req.query);
+    const { threadId } = req.query.threadId;
+    console.log('crlh');
+    console.log(threadId);
+    const messages = await getMessages(threadId);
+    return NextResponse.json(messages);
   } catch (error) {
     return NextResponse.json({ error: error.message }, { status: 400 });
   }
