@@ -48,9 +48,6 @@ export default function ChatPage() {
     await sendMessageToBackend(input);
     setInput('');
     fetchMessages(threadId);
-    setInterval(() => {
-      fetchMessages(threadId);
-    }, 2000);
   };
 
   return (
