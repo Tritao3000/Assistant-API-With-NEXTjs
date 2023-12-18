@@ -8,14 +8,15 @@ export default function ChatPage() {
 
   // Fetch Messages from a specific thread
   const fetchMessages = async (id) => {
-    const response = await fetch(`/api/messages/?threadId=${id}`);
+    const response = await fetch(`/api/messages/${id}`);
     const data = await response.json();
-    setMessages(data.messages.data || []);
+    setMessages(data.messages || []);
   };
 
   // Send a message to the backend
   const sendMessageToBackend = async (messageContent) => {
-    await fetch(`/api/messages/threadId=${threadId}`, {
+    console.log(threadId);
+    await fetch(`/api/messages/${threadId}`, {
       method: 'POST',
       body: JSON.stringify({ content: messageContent }),
       headers: { 'Content-Type': 'application/json' },
