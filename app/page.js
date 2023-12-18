@@ -51,14 +51,14 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="container mx-auto p-4 h-screen flex flex-col justify-between">
-      <div className="messages overflow-y-scroll">
+    <div className="container mx-auto p-4 h-screen flex flex-col justify-between max-w-4xl">
+      <div className="messages overflow-y-auto">
         {messages.map((message, index) => (
           <div
             key={index}
             className={`message ${message.role === 'user' ? 'text-right' : ''}`}
           >
-            <p className="bg-gray-200 rounded p-2 my-2">
+            <p className="bg-gray-200 rounded p-2 my-2 text-sm">
               {message.content[0].text.value}
             </p>
           </div>
@@ -69,12 +69,12 @@ export default function ChatPage() {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="border-2 border-gray-300 rounded p-2 w-full"
+          className="border-2 border-gray-300 rounded p-2 w-full text-sm"
           placeholder="Type your message"
         />
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm"
         >
           Send
         </button>
