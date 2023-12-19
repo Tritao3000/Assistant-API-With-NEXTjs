@@ -66,7 +66,7 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="container mx-auto p-4 flex flex-col justify-between h-[80vh] my-20 max-w-2xl bg-white/10 shadow-xl rounded-lg">
+    <div className="container mx-auto p-4 flex flex-col justify-between h-[90vh] my-4 max-w-2xl bg-white/10 shadow-xl rounded-lg">
       <div className="flex items-center justify-between p-4 rounded-lg text-white ">
         <h1 className="text-xl font-bold">Chat with Mike Trillions</h1>
         <div
