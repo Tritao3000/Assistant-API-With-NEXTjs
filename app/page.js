@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Drago from '@/public/drago.jpeg';
 import Tiago from '@/public/tiago.png';
 import { IoMdRefresh } from 'react-icons/io';
+import { FaArrowUp } from 'react-icons/fa6';
 
 export default function ChatPage() {
   const [messages, setMessages] = useState([]);
@@ -122,14 +123,14 @@ export default function ChatPage() {
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="flex-1 border-2 border-gray-300 rounded p-2 text-sm"
+          className="flex-1 border-2 border-gray-300 rounded-full p-2 text-sm"
           placeholder="Type your message here..."
         />
         <button
           type="submit"
-          className="bg-white/20 hover:bg-white/30 text-white font-bold py-2 px-4 rounded text-sm"
+          className="bg-white/20 hover:bg-white/30 text-white font-bold w-[40px] text-sm rounded-full"
         >
-          Send
+          <FaArrowUp className="m-auto" />
         </button>
       </form>
     </div>
