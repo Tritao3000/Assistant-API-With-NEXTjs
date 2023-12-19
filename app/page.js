@@ -58,35 +58,52 @@ export default function ChatPage() {
   };
 
   return (
-    <div className=" container mx-auto p-4 h-screen flex flex-col justify-between max-w-4xl">
-      <div className="messages overflow-y-auto mt-20">
+    <div className="container mx-auto p-4 flex flex-col justify-between h-auto min-h-[750px] my-20 max-w-4xl bg-white shadow-xl rounded-lg">
+      <div className="flex items-center justify-between bg-blue-500 p-4 rounded-t-lg text-white">
+        <h1 className="text-xl font-bold">Chat with Drago & Tiago</h1>
+        <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Refresh
+        </button>
+      </div>
+
+      <div className="messages flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`message flex space-x-4 items-start my-4 ${
-              message.role === 'user' ? 'text-right' : ''
+            className={`flex items-end space-x-2 ${
+              message.role === 'user' ? 'justify-end' : ''
             }`}
           >
-            <Image
-              alt="messageSentBy"
-              src={message.role === 'user' ? Drago : Tiago}
-              width={50}
-              height={50}
-              className="rounded-full shadow-lg h-[50px]"
-            />
-            <p className="bg-gray-200 rounded-lg rounded-tl-none p-2 text-sm mt-2">
-              {message.content[0].text.value}
-            </p>
+            <div className={`${message.role === 'user' ? 'order-last' : ''}`}>
+              <Image
+                alt="messageSentBy"
+                src={message.role === 'user' ? Drago : Tiago}
+                width={40}
+                height={40}
+                className="rounded-full"
+              />
+            </div>
+            <div
+              className={`max-w-xs lg:max-w-md p-3 rounded-lg ${
+                message.role === 'user' ? 'bg-blue-100' : 'bg-gray-200'
+              }`}
+            >
+              <p className="text-sm">{message.content[0].text.value}</p>
+            </div>
           </div>
         ))}
       </div>
-      <form className="mt-auto flex space-x-2" onSubmit={sendMessage}>
+
+      <form
+        className="mt-auto flex space-x-2 bg-gray-100 p-4 rounded-b-lg"
+        onSubmit={sendMessage}
+      >
         <input
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="border-2 border-gray-300 rounded p-2 w-full text-sm"
-          placeholder="Type your message"
+          className="flex-1 border-2 border-gray-300 rounded p-2 text-sm"
+          placeholder="Type your message here..."
         />
         <button
           type="submit"
