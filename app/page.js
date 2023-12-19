@@ -1,5 +1,8 @@
 'use client';
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
+import Drago from '@/public/drago.jpeg';
+import Tiago from '@/public/tiago.png';
 
 export default function ChatPage() {
   const [messages, setMessages] = useState([]);
@@ -48,17 +51,30 @@ export default function ChatPage() {
     await sendMessageToBackend(input);
     setInput('');
     fetchMessages(threadId);
+    setTimeout(async () => {
+      // Fetch messages for the second time
+      await fetchMessages(threadId);
+    }, 3000);
   };
 
   return (
-    <div className="container mx-auto p-4 h-screen flex flex-col justify-between max-w-4xl">
-      <div className="messages overflow-y-auto">
+    <div className=" container mx-auto p-4 h-screen flex flex-col justify-between max-w-4xl">
+      <div className="messages overflow-y-auto mt-20">
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`message ${message.role === 'user' ? 'text-right' : ''}`}
+            className={`message flex space-x-4 items-start my-4 ${
+              message.role === 'user' ? 'text-right' : ''
+            }`}
           >
-            <p className="bg-gray-200 rounded p-2 my-2 text-sm">
+            <Image
+              alt="messageSentBy"
+              src={message.role === 'user' ? Drago : Tiago}
+              width={50}
+              height={50}
+              className="rounded-full shadow-lg h-[50px]"
+            />
+            <p className="bg-gray-200 rounded-lg rounded-tl-none p-2 text-sm mt-2">
               {message.content[0].text.value}
             </p>
           </div>
@@ -74,7 +90,7 @@ export default function ChatPage() {
         />
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded text-sm"
+          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded text-sm"
         >
           Send
         </button>
