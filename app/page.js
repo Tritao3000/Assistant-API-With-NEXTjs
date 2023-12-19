@@ -66,12 +66,14 @@ export default function ChatPage() {
       <div className="flex items-center justify-between p-4 rounded-lg text-white ">
         <h1 className="text-xl font-bold">Chat with Mike Trillions</h1>
         <div
+          title="New Chat"
           className="bg-white/10  p-2 rounded-full cursor-pointer hover:scale-110 transform transition duration-300"
           onClick={refreshWindow}
         >
           <IoMdRefresh color="white" />
         </div>
       </div>
+      <hr className="mx-4"></hr>
 
       <div className="messages flex-1 overflow-y-auto p-4 space-y-4">
         {messages
@@ -99,8 +101,10 @@ export default function ChatPage() {
                   }`}
                 />
                 <div
-                  className={`max-w-xs lg:max-w-md p-3 rounded-lg ${
-                    message.role === 'user' ? 'bg-white/90' : 'bg-white/80'
+                  className={`max-w-xs lg:max-w-md p-3 rounded-lg mt-4 ${
+                    message.role === 'user'
+                      ? 'bg-white/90 rounded-tr-none'
+                      : 'bg-white rounded-tl-none'
                   }`}
                 >
                   <p className="text-sm">{message.content[0].text.value}</p>
@@ -111,7 +115,7 @@ export default function ChatPage() {
       </div>
 
       <form
-        className="mt-auto flex space-x-2 bg-white/20 p-2 rounded-lg"
+        className="mt-auto flex space-x-2  p-2 rounded-lg"
         onSubmit={sendMessage}
       >
         <input
@@ -123,7 +127,7 @@ export default function ChatPage() {
         />
         <button
           type="submit"
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded text-sm"
+          className="bg-white/20 hover:bg-white/30 text-white font-bold py-2 px-4 rounded text-sm"
         >
           Send
         </button>
