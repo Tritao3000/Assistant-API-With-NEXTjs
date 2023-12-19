@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Drago from '@/public/drago.jpeg';
 import Tiago from '@/public/tiago.png';
+import { IoMdRefresh } from 'react-icons/io';
 
 export default function ChatPage() {
   const [messages, setMessages] = useState([]);
@@ -52,50 +53,65 @@ export default function ChatPage() {
     setInput('');
     fetchMessages(threadId);
     setTimeout(async () => {
-      // Fetch messages for the second time
       await fetchMessages(threadId);
     }, 3000);
   };
 
+  const refreshWindow = () => {
+    window.location.reload();
+  };
+
   return (
-    <div className="container mx-auto p-4 flex flex-col justify-between h-auto min-h-[750px] my-20 max-w-4xl bg-white shadow-xl rounded-lg">
-      <div className="flex items-center justify-between bg-blue-500 p-4 rounded-t-lg text-white">
-        <h1 className="text-xl font-bold">Chat with Drago & Tiago</h1>
-        <button className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Refresh
-        </button>
+    <div className="container mx-auto p-4 flex flex-col justify-between h-[750px] my-20 max-w-4xl bg-white/10 shadow-xl rounded-lg">
+      <div className="flex items-center justify-between p-4 rounded-lg text-white ">
+        <h1 className="text-xl font-bold">Chat with Mike Trillions</h1>
+        <div
+          className="bg-white/10  p-2 rounded-full cursor-pointer hover:scale-110 transform transition duration-300"
+          onClick={refreshWindow}
+        >
+          <IoMdRefresh color="white" />
+        </div>
       </div>
 
       <div className="messages flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((message, index) => (
-          <div
-            key={index}
-            className={`flex items-end space-x-2 ${
-              message.role === 'user' ? 'justify-end' : ''
-            }`}
-          >
-            <div className={`${message.role === 'user' ? 'order-last' : ''}`}>
-              <Image
-                alt="messageSentBy"
-                src={message.role === 'user' ? Drago : Tiago}
-                width={40}
-                height={40}
-                className="rounded-full"
-              />
-            </div>
+        {messages
+          .slice()
+          .reverse()
+          .map((message, index) => (
             <div
-              className={`max-w-xs lg:max-w-md p-3 rounded-lg ${
-                message.role === 'user' ? 'bg-blue-100' : 'bg-gray-200'
-              }`}
+              key={index}
+              className={`flex ${message.role === 'user' ? 'justify-end' : ''}`}
             >
-              <p className="text-sm">{message.content[0].text.value}</p>
+              <div
+                className={`flex items-start ${
+                  message.role === 'user'
+                    ? 'flex-row-reverse space-x-reverse'
+                    : 'space-x-2'
+                }`}
+              >
+                <Image
+                  alt="messageSentBy"
+                  src={message.role === 'user' ? Drago : Tiago}
+                  width={40}
+                  height={40}
+                  className={`rounded-full w-[40px] h-[40px] ${
+                    message.role === 'user' ? 'ml-2' : ''
+                  }`}
+                />
+                <div
+                  className={`max-w-xs lg:max-w-md p-3 rounded-lg ${
+                    message.role === 'user' ? 'bg-white/90' : 'bg-white/80'
+                  }`}
+                >
+                  <p className="text-sm">{message.content[0].text.value}</p>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
 
       <form
-        className="mt-auto flex space-x-2 bg-gray-100 p-4 rounded-b-lg"
+        className="mt-auto flex space-x-2 bg-white/20 p-2 rounded-lg"
         onSubmit={sendMessage}
       >
         <input
