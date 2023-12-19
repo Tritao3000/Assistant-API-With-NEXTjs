@@ -53,9 +53,12 @@ export default function ChatPage() {
     await sendMessageToBackend(input);
     setInput('');
     fetchMessages(threadId);
-    setTimeout(async () => {
-      await fetchMessages(threadId);
-    }, 3000);
+  };
+
+  const sendMessageOnClick = async (content) => {
+    if (!threadId) return;
+    await sendMessageToBackend(content);
+    fetchMessages(threadId);
   };
 
   const refreshWindow = () => {
@@ -63,15 +66,15 @@ export default function ChatPage() {
   };
 
   return (
-    <div className="container mx-auto p-4 flex flex-col justify-between h-[750px] my-20 max-w-4xl bg-white/10 shadow-xl rounded-lg">
+    <div className="container mx-auto p-4 flex flex-col justify-between h-[80vh] my-20 max-w-2xl bg-white/10 shadow-xl rounded-lg">
       <div className="flex items-center justify-between p-4 rounded-lg text-white ">
         <h1 className="text-xl font-bold">Chat with Mike Trillions</h1>
         <div
           title="New Chat"
-          className="bg-white/10  p-2 rounded-full cursor-pointer hover:scale-110 transform transition duration-300"
+          className="bg-white/10 w-[40px]  p-2 rounded-full cursor-pointer hover:scale-105 transform transition duration-300"
           onClick={refreshWindow}
         >
-          <IoMdRefresh color="white" />
+          <IoMdRefresh color="white" size={20} className="mx-auto " />
         </div>
       </div>
       <hr className="mx-4"></hr>
@@ -114,7 +117,52 @@ export default function ChatPage() {
             </div>
           ))}
       </div>
-
+      <div
+        className={`mx-auto flex flex-col space-y-2 w-full px-2 mb-4 ${
+          messages.length == 0 ? `` : 'hidden'
+        }`}
+      >
+        <div className="flex space-x-2 m-auto w-full">
+          <div
+            onClick={() =>
+              sendMessageOnClick('O que achas das criptomoedas Guru?')
+            }
+            className="flex mx-auto w-full justify-between px-2 py-2 items-center rounded-lg bg-white/20 hover:bg-white/30 cursor-pointer"
+          >
+            <p className="text-white text-sm">
+              O que achas das criptomoedas Guru?
+            </p>
+            <FaArrowUp className="" size={14} color="white" />
+          </div>
+          <div
+            onClick={() => sendMessageOnClick('O que é um zombie Mike?')}
+            className="flex mx-auto w-full justify-between px-2 py-2 items-center rounded-lg bg-white/20 hover:bg-white/30 cursor-pointer"
+          >
+            <p className="text-white text-sm">O que é um zombie Mike?</p>
+            <FaArrowUp className="" size={14} color="white" />
+          </div>
+        </div>
+        <div className="flex space-x-2 m-auto w-full">
+          <div
+            onClick={() => sendMessageOnClick('Quem é o Guru Mike Billions?')}
+            className="flex mx-auto w-full justify-between px-2 py-2 items-center rounded-lg bg-white/20 hover:bg-white/30 cursor-pointer"
+          >
+            <p className="text-white text-sm">Quem é o Guru Mike Billions?</p>
+            <FaArrowUp className="" size={14} color="white" />
+          </div>
+          <div
+            onClick={() =>
+              sendMessageOnClick('Oh Miguel, és mesmo meio burro?')
+            }
+            className="flex mx-auto w-full justify-between px-2 py-2 items-center rounded-lg bg-white/20 hover:bg-white/30 cursor-pointer"
+          >
+            <p className="text-white text-sm">
+              Oh Miguel, és mesmo meio burro?
+            </p>
+            <FaArrowUp className="" size={14} color="white" />
+          </div>
+        </div>
+      </div>
       <form
         className="mt-auto flex space-x-2  p-2 rounded-lg"
         onSubmit={sendMessage}
@@ -127,10 +175,11 @@ export default function ChatPage() {
           placeholder="Type your message here..."
         />
         <button
+          title="Send Message"
           type="submit"
           className="bg-white/20 hover:bg-white/30 text-white font-bold w-[40px] text-sm rounded-full"
         >
-          <FaArrowUp className="m-auto" />
+          <FaArrowUp size={16} className="m-auto" />
         </button>
       </form>
     </div>
