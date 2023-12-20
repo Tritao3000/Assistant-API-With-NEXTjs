@@ -68,7 +68,7 @@ export default function ChatPage() {
   return (
     <div className="container mx-auto p-4 flex flex-col justify-between h-[90vh] my-4 max-w-2xl bg-white/10 shadow-xl rounded-lg">
       <div className="flex items-center justify-between p-4 rounded-lg text-white ">
-        <h1 className="text-xl font-bold">Chat with Mike Trillions</h1>
+        <h1 className="text-xl font-bold">Mike Trillions</h1>
         <div
           title="New Chat"
           className="bg-white/10 w-[40px]  p-2 rounded-full cursor-pointer hover:scale-105 transform transition duration-300"
